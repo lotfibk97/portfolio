@@ -1,22 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital@0;1&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: #20242d;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 800;
+.primary-color {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-600  inline-block;
 }
 
-span,
-.primary-color {
-  background-image: linear-gradient(to right, #dd32f3, #ce90cb);
-  -webkit-background-clip: text;
-  color: transparent;
+body {
+  background-color: black;
 }
 
 .bg-primary-color {
-  background-image: linear-gradient(to right, #6b2b72, #a5079d);
+  @apply bg-gradient-to-r from-orange-400 to-pink-600  inline-block;
 }
