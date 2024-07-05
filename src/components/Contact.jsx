@@ -2,7 +2,10 @@ import React from "react";
 
 const Contact = () => {
   return (
-    <div className="flex justify-center my-5 h-full sm:h-[70vh] items-center">
+    <div
+      className="flex justify-center my-5 h-full sm:h-[70vh] items-center"
+      id="contact"
+    >
       <div className="max-w-[1200px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2">
           <div className="p-6 mr-2 bg-gray-800 rounded-xl flex flex-col justify-around">

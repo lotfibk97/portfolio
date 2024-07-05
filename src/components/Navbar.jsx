@@ -10,11 +10,21 @@ const Navbar = () => {
     <div className="z-10 text-gray-500 flex justify-between items-center max-w-[1240px] mx-auto h-24 px-4 text-l">
       <h1 className="text-3xl font-bold primary-color ml-4">Lotfi Bokhari</h1>
       <ul className="hidden md:flex">
-        <li className="p-5">Home</li>
-        <li className="p-5">Company</li>
-        <li className="p-5">Resources</li>
-        <li className="p-5">About</li>
-        <li className="p-5">Contact</li>
+        <li className="p-5">
+          <a href="#home">Home</a>
+        </li>
+        <li className="p-5">
+          <a href="#about">About</a>
+        </li>
+        <li className="p-5">
+          <a href="#work">Work</a>
+        </li>
+        <li className="p-5">
+          <a href="#experience">Experience</a>
+        </li>
+        <li className="p-5">
+          <a href="#contact">Contact</a>
+        </li>
       </ul>
 
       <div onClick={handleNav} className="block md:hidden">
@@ -30,11 +40,21 @@ const Navbar = () => {
       >
         <h1 className="text-3xl font-bold primary-color m-4">Lotfi Bokhari</h1>
         <ul className="p-8 text-2xl">
-          <li className="p-2">Home</li>
-          <li className="p-2">Company</li>
-          <li className="p-2">Resources</li>
-          <li className="p-2">About</li>
-          <li className="p-2">Contact</li>
+          <li className="p-2">
+            <a href="#home">Home</a>
+          </li>
+          <li className="p-2">
+            <a href="#about">About</a>
+          </li>
+          <li className="p-2">
+            <a href="#work">Work</a>
+          </li>
+          <li className="p-2">
+            <a href="#experience">Experience</a>
+          </li>
+          <li className="p-2">
+            <a href="#contact">Contact</a>
+          </li>
         </ul>
       </div>
     </div>

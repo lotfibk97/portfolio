@@ -3,7 +3,7 @@ import aboutImg from "../assets/about4.jpeg";
 
 const About = () => {
   return (
-    <div className="py-10 text-white bg-[#232325] h-auto">
+    <div className="py-10 text-white bg-[#232325] h-auto" id="about">
       <div className="flex sm:flex-row flex-col-reverse items-center md:gap-6 gap-12 px-10 max-w-6xl mx-auto">
         <div>
           <div className="w-[400px] h-full">
@@ -32,10 +32,10 @@ const About = () => {
               </p>
             </div>
           </div>
-          <div className="flex mt-10 items-center gap-7">
+          <div className="flex mx-14 mt-10 items-center gap-48">
             <div className="bg-[#333333]/40 p-5 rounded-lg">
               <h3 className="md:text-4xl text-2xl font-semibold text-white">
-                11
+                10
                 <span className="primary-color">+</span>
               </h3>
               <p>
