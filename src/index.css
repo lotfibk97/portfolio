@@ -1,15 +1,328 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.primary-color {
-  @apply text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-600  inline-block;
+/* ── visionOS-style charcoal Liquid Glass palette ────────────
+ * Neutral dark grey with subtle warm ambient. Cards have NO
+ * border — definition comes from a soft top-edge specular and
+ * an ambient drop shadow, like Apple Vision Pro UI. */
+:root {
+  --background: #0c0d10;
+  --background-deep: #06070a;
+  --foreground: #f5f5f7;
+  --card: #1a1c22;
+  --popover: #20232b;
+  --secondary: #20232b;
+  --muted: #16181d;
+  --muted-foreground: #a8a8b0;
+
+  --accent: #5e8eff;
+  --accent-soft: #93b3ff;
+  --accent-glow: #c2d4ff;
+  --accent-deep: #3b6bd6;
+  --accent-bright: #7099ff;
+
+  --gold: #f5c95a;
+  --gold-soft: #ffd97a;
+  --mint: #34c759;
+  --rose: #ff6961;
+
+  /* Borders are mostly invisible — definition via shadows + highlights */
+  --border: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+
+  /* Frosted glass — neutral, slightly warm-tinted at heavy blur */
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-bg-strong: rgba(255, 255, 255, 0.12);
+  --glass-bg-thick: rgba(255, 255, 255, 0.18);
+
+  /* Top-edge specular highlight — the only "rim" definition */
+  --glass-rim-top: rgba(255, 255, 255, 0.28);
+  --glass-rim-bottom: rgba(255, 255, 255, 0.05);
+  --glass-highlight: rgba(255, 255, 255, 0.22);
+
+  /* Ambient floor shadows — like a real glass panel */
+  --glass-shadow:
+    0 24px 60px -12px rgba(0, 0, 0, 0.55),
+    0 12px 28px -8px rgba(0, 0, 0, 0.4),
+    0 4px 10px -2px rgba(0, 0, 0, 0.3);
+  --glass-shadow-hover:
+    0 36px 80px -12px rgba(0, 0, 0, 0.65),
+    0 18px 40px -8px rgba(0, 0, 0, 0.5),
+    0 6px 14px -2px rgba(0, 0, 0, 0.35);
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
 }
 
 body {
-  background-color: black;
+  margin: 0;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  letter-spacing: -0.011em;
+  overflow-x: hidden;
+  position: relative;
 }
 
-.bg-primary-color {
-  @apply bg-gradient-to-r from-orange-400 to-pink-600  inline-block;
+/* ── visionOS ambient background — deep grey, subtle warm bleed ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -25% -15% -25% -15%;
+  z-index: -2;
+  background:
+    radial-gradient(
+      ellipse 55% 45% at 12% 20%,
+      rgba(120, 130, 160, 0.18) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 45% 38% at 88% 12%,
+      rgba(160, 130, 100, 0.12) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 65% 55% at 80% 78%,
+      rgba(180, 140, 110, 0.16) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 55% 45% at 18% 82%,
+      rgba(80, 95, 130, 0.18) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 35% 30% at 50% 50%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 60%
+    ),
+    linear-gradient(160deg, #0d0f14 0%, #14161c 50%, #0a0b0f 100%);
+  filter: saturate(105%);
+  animation: ambientDrift 50s ease-in-out infinite alternate;
+}
+
+@keyframes ambientDrift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-1.5%, 0.8%) scale(1.03);
+  }
+}
+
+/* Subtle film grain — barely perceptible, matches Apple's deliberate texture */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      transparent 0%,
+      rgba(6, 7, 10, 0.35) 95%
+    ),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size:
+    cover,
+    180px 180px;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+}
+
+/* ── visionOS Glass primitives — no border, shadow + rim only ─ */
+@layer components {
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: none;
+    box-shadow:
+      /* Top-edge specular highlight — replaces the border */
+      inset 0 1px 0 var(--glass-rim-top),
+      /* Subtle bottom darkening for depth */
+      inset 0 -1px 0 var(--glass-rim-bottom),
+      /* Hairline outer rim — visible enough to separate from bg */
+      0 0 0 0.5px rgba(255, 255, 255, 0.08),
+      var(--glass-shadow);
+  }
+
+  .glass-strong {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(48px) saturate(190%);
+    -webkit-backdrop-filter: blur(48px) saturate(190%);
+    border: none;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      inset 0 -1px 0 var(--glass-rim-bottom),
+      0 0 0 0.5px rgba(255, 255, 255, 0.07),
+      var(--glass-shadow-hover);
+  }
+
+  .glass-thin {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(30px) saturate(170%);
+    -webkit-backdrop-filter: blur(30px) saturate(170%);
+    border: none;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      0 0 0 0.5px rgba(255, 255, 255, 0.04),
+      0 8px 24px -6px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Solid card surface — for cases where blur can't render */
+  .surface-card {
+    background: var(--card);
+    border: none;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 0 0 0.5px rgba(255, 255, 255, 0.04),
+      var(--glass-shadow);
+  }
+
+  .gradient-text {
+    background: linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #e6e6ea 50%,
+      #b8b8c4 100%
+    );
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientX 12s ease infinite;
+  }
+
+  .accent-text {
+    color: var(--accent-soft);
+  }
+
+  /* Pills are also glass — no border, just frost + top rim */
+  .pill {
+    @apply inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: none;
+    color: #d6dde8;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 0 0 0.5px rgba(255, 255, 255, 0.05),
+      0 4px 12px -2px rgba(0, 0, 0, 0.3);
+  }
+
+  .pill-accent {
+    background: rgba(94, 142, 255, 0.18);
+    border: none;
+    color: var(--accent-glow);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      0 0 0 0.5px rgba(94, 142, 255, 0.3),
+      0 4px 16px -2px rgba(94, 142, 255, 0.25);
+  }
+}
+
+/* ── Buttons — visionOS treatment, no border outline ────────── */
+.btn-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  background: linear-gradient(180deg, #7099ff 0%, #5e8eff 55%, #3b6bd6 100%);
+  border: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 8px 24px -4px rgba(94, 142, 255, 0.5),
+    0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+    0 14px 36px -4px rgba(94, 142, 255, 0.6),
+    0 4px 10px rgba(0, 0, 0, 0.35);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  font-weight: 500;
+  color: #f0f0f4;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(28px) saturate(170%);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  border: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 0 0 0.5px rgba(255, 255, 255, 0.06),
+    0 6px 18px -2px rgba(0, 0, 0, 0.4);
+  transition: all 0.25s ease;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    0 0 0 0.5px rgba(255, 255, 255, 0.1),
+    0 10px 28px -2px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Custom scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ── Section utility ───────────────────────────────────────── */
+.section {
+  position: relative;
+  padding: 7rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 9rem 2rem;
+  }
 }
