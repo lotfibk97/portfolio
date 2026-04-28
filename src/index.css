@@ -326,3 +326,76 @@ body::after {
     padding: 9rem 2rem;
   }
 }
+
+/* ── Mobile performance: tame GPU-heavy effects ─────────────
+ * On phones, stacked backdrop-filter blurs, mix-blend-mode and
+ * 140-160px blur radii cause severe jank / freezes (especially
+ * iOS Safari and lower-end Android). We keep the visual identity
+ * but trim the cost. */
+@media (max-width: 768px) {
+  /* Kill the most expensive layer: full-screen mix-blend-mode + noise */
+  body::after {
+    display: none;
+  }
+
+  /* Static ambient — no animation, simpler gradients */
+  body::before {
+    animation: none;
+    inset: 0;
+    background:
+      radial-gradient(
+        ellipse 70% 50% at 20% 20%,
+        rgba(120, 130, 160, 0.14) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 70% 50% at 80% 80%,
+        rgba(180, 140, 110, 0.12) 0%,
+        transparent 60%
+      ),
+      linear-gradient(160deg, #0d0f14 0%, #14161c 50%, #0a0b0f 100%);
+    filter: none;
+  }
+
+  /* Cut backdrop-filter cost — mobile GPUs don't like 40-48px blurs */
+  .glass,
+  .glass-strong,
+  .glass-thin,
+  .pill,
+  .btn-ghost {
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+  }
+
+  /* Stop blob/float/gradient animations — they force constant repaint */
+  .animate-blob-slow,
+  .animate-blob-fast,
+  .animate-float {
+    animation: none !important;
+  }
+
+  /* Tame the giant ambient blur halos in Hero */
+  .blur-\[140px\],
+  .blur-\[160px\],
+  .blur-\[120px\] {
+    filter: blur(60px) !important;
+  }
+
+  /* Reduce the big 3xl decorative blurs that show on cards */
+  .blur-3xl {
+    filter: blur(32px) !important;
+  }
+}
+
+/* Respect users who explicitly want less motion */
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+  .animate-blob-slow,
+  .animate-blob-fast,
+  .animate-float,
+  .gradient-text {
+    animation: none !important;
+  }
+}
