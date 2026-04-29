@@ -9,7 +9,6 @@ import reumInsights from "../assets/reum/dark-insights.png";
 import reumStrategy from "../assets/reum/dark-strategy.png";
 import reumLearning from "../assets/reum/dark-learning.png";
 import reumProfile from "../assets/reum/dark-businessprofile.png";
-import reumWorkspace from "../assets/reum/dark-workspace.png";
 import reumDashboard from "../assets/reum/dark-dashboard.png";
 
 // Andre.ai
@@ -93,7 +92,6 @@ const projects = [
       reumStrategy,
       reumLearning,
       reumProfile,
-      reumWorkspace,
       reumDashboard,
     ],
     featured: true,

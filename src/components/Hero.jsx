@@ -154,12 +154,6 @@ const Hero = () => {
                 Dubai · Remote-friendly
               </div>
             </div>
-            <div className="absolute -top-4 -right-4 glass rounded-2xl px-4 py-3 flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-good shadow-[0_0_12px_#34c759]" />
-              <span className="text-sm font-medium text-white">
-                Open to work
-              </span>
-            </div>
           </div>
         </motion.div>
       </div>
