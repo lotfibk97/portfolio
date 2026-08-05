@@ -21,7 +21,7 @@ const Contact = () => {
     const body = encodeURIComponent(
       `${form.message}\n\n— ${form.name}\n${form.email}`
     );
-    window.location.href = `mailto:lotfibk97@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:lotfibokhari@protonmail.com?subject=${subject}&body=${body}`;
     setSent(true);
   };
 
@@ -53,7 +53,7 @@ const Contact = () => {
 
                 <div className="mt-10 space-y-4">
                   <a
-                    href="mailto:lotfibk97@gmail.com"
+                    href="mailto:lotfibokhari@protonmail.com"
                     className="group flex items-center gap-4 glass rounded-2xl p-4 hover:-translate-y-0.5 transition-all"
                   >
                     <span className="grid h-11 w-11 place-items-center rounded-xl glass-thin">
@@ -62,7 +62,7 @@ const Contact = () => {
                     <span className="flex-1">
                       <span className="block text-xs text-white/50">Email</span>
                       <span className="block text-white font-medium">
-                        lotfibk97@gmail.com
+                        lotfibokhari@protonmail.com
                       </span>
                     </span>
                   </a>
